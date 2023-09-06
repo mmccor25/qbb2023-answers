@@ -33,8 +33,6 @@ for i in range(len(samples)):
     if "female" in samples[i]:
         cols.append(i)
 
-print(cols_m)
-
 
 
 # Subset data of interest
@@ -47,8 +45,6 @@ x_m = samples[cols_m]
 y = expression
 y_m = expression_m
 
-print(samples)
-
 dev_x = ["10","11","12","13","14A","14B","14C","14D"]
 
 #2x male data
@@ -57,9 +53,12 @@ _2x_y_m = 2*np.array(y_m)
 
 # Plot data
 fig, ax = plt.subplots()
-ax.set_title( "FBtr0073461" )
+ax.set_title( "sisA" )
 ax.plot(dev_x, y )
 ax.plot(dev_x, y_m)
 ax.plot(dev_x, _2x_y_m)
+ax.set_xlabel("developmental stage")
+ax.set_ylabel("mRNA abundance (RPKM)")
+plt.xticks(rotation = 90)
 fig.savefig( "FBtr0073461.png" )
 plt.close( fig )
