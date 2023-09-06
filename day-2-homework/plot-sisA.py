@@ -6,19 +6,8 @@ import matplotlib.pyplot as plt
 # Get dataset to recreate Fig 3B from Lott et al 2011 PLoS Biology https://pubmed.gov/21346796
 # wget https://github.com/bxlab/cmdb-quantbio/raw/main/assignments/lab/bulk_RNA-seq/extra_data/all_annotated.csv
 
-f = open("all_annotated.csv", "r")
-
-transcripts =[]
-lines = f.readlines()
-for i in lines:
-    i = i.rstrip()
-    i = list(i.split(","))
-    transcripts.append(i[0])
-print(transcripts)
-    
-
-# transcripts = np.loadtxt( "all_annotated.csv", delimiter=",", usecols=0, dtype="<U30", skiprows=1 )
-# print( "transcripts: ", transcripts[0:5] )
+transcripts = np.loadtxt( "all_annotated.csv", delimiter=",", usecols=0, dtype="<U30", skiprows=1 )
+print( "transcripts: ", transcripts[0:5] )
 
 samples = np.loadtxt( "all_annotated.csv", delimiter=",", max_rows=1, dtype="<U30" )[2:]
 print( "samples: ", samples[0:5] )
