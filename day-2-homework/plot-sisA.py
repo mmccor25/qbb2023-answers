@@ -6,7 +6,14 @@ import matplotlib.pyplot as plt
 # Get dataset to recreate Fig 3B from Lott et al 2011 PLoS Biology https://pubmed.gov/21346796
 # wget https://github.com/bxlab/cmdb-quantbio/raw/main/assignments/lab/bulk_RNA-seq/extra_data/all_annotated.csv
 
-transcripts = np.loadtxt( "all_annotated.csv", delimiter=",", usecols=0, dtype="<U30", skiprows=1 )
+f = open("all_annotated.csv", "r")
+
+transcripts =[]
+lines = f.readlines()
+for i in lines[1:]:
+    i = i.rstrip()
+    i = list(i.split(","))
+    transcripts.append(i[0])    
 print( "transcripts: ", transcripts[0:5] )
 
 samples = np.loadtxt( "all_annotated.csv", delimiter=",", max_rows=1, dtype="<U30" )[2:]
@@ -33,8 +40,6 @@ for i in range(len(samples)):
     if "female" in samples[i]:
         cols.append(i)
 
-print(cols_m)
-
 
 
 # Subset data of interest
@@ -47,8 +52,6 @@ x_m = samples[cols_m]
 y = expression
 y_m = expression_m
 
-print(samples)
-
 dev_x = ["10","11","12","13","14A","14B","14C","14D"]
 
 #2x male data
@@ -57,9 +60,12 @@ _2x_y_m = 2*np.array(y_m)
 
 # Plot data
 fig, ax = plt.subplots()
-ax.set_title( "FBtr0073461" )
+ax.set_title( "sisA" )
 ax.plot(dev_x, y )
 ax.plot(dev_x, y_m)
 ax.plot(dev_x, _2x_y_m)
+ax.set_xlabel("developmental stage")
+ax.set_ylabel("mRNA abundance (RPKM)")
+plt.xticks(rotation = 90)
 fig.savefig( "FBtr0073461.png" )
 plt.close( fig )
