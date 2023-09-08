@@ -3,10 +3,14 @@
 
 def mean_inflammation(patient_row_index, data_file_name):
 	data = open(data_file_name, "r")
-	data = data.readlines()
-	
 
-	patient = data[patient_row_index]
+	i = 0
+	for line in data:
+		if i == patient_row_index:
+			patient = line
+		else:
+			i = i+1
+			
 	patient = patient.rstrip()
 	patient = patient.split(",")
 	
