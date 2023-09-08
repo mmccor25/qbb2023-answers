@@ -23,20 +23,24 @@ def wright_fisher(pop_size, starting_freq):
 		
 	return allele_freq, len(allele_freq)
 
-def make_plots(pop_size, starting_freq):
-	import matplotlib.pyplot as plt
 
+print(wright_fisher(452, .3)[1])
+
+import matplotlib.pyplot as plt
+
+def make_plots(pop_size, starting_freq, xy_iterations, hist_iterations):
 	# xy plot with multiple iterations
-	fig, (ax1, ax2 )= plt.subplots(1, 2)
-	for i in range(30):
+	fig, (ax1, ax2)= plt.subplots(1, 2)
+	for i in range(xy_iterations):
 		function = wright_fisher(pop_size, starting_freq)
 		generation = range(function[1])
 		allele_freq_list = function[0]
 		ax1.plot(generation, allele_freq_list)
 
+
 	#Histogram
 	final_generations = []
-	for i in range(1000):
+	for i in range(hist_iterations):
 		function = wright_fisher(pop_size, starting_freq)
 		final = (function[1])
 		final_generations.append(final)
@@ -44,4 +48,65 @@ def make_plots(pop_size, starting_freq):
 
 	plt.show()
 
-make_plots(452, .3)
+make_plots(452, .3, 30, 1000)
+
+
+#EXERCISE 3
+
+#avg fixation times over 50 iterations for each of 5 population sizes
+population_sizes = [52, 84, 3332, 225, 2345]
+avg_fix_times = []
+for size in population_sizes:
+	fixation_times = []
+	for i in range(50):
+		output = wright_fisher(size, .3)
+		generation = output[1]
+		fixation_times.append(generation)
+	average = sum(fixation_times)/len(fixation_times)
+	avg_fix_times.append(average)
+fig, ax_pop = plt.subplots()
+ax_pop.scatter(population_sizes, avg_fix_times)
+ax_pop.set_title("Average fixation time over 50 iterations for each of 5 population sizes")
+ax_pop.set_xlabel("Population size")
+ax_pop.set_ylabel("Average time to fixation (generations)")
+
+
+#avg fixation times over 10 iterations for each of 5 allele frequencies
+frequencies = [.3, .77, .6, .2, .83]
+vfreq_avg_fix_times = []
+for frequency in frequencies:
+	vfreq_fix_times = []
+	for i in range(10):
+		vfreq_output = wright_fisher(1001, i)
+		vfreq_generation = vfreq_output[1]
+		vfreq_fix_times.append(vfreq_generation)
+fig, ax_freq = plt.subplots()
+ax_freq.scatter(frequencies, avg_fix_times)
+ax_freq.set_title("Average fixation time over 10 iterations for each of 5 allele frequencies")
+ax_freq.set_xlabel("Frequency")
+ax_freq.set_ylabel("Average time to fixation (generations)")
+
+
+plt.show()
+
+
+
+
+print(avg_fix_time)
+
+
+# please run the first submission/commit on GitHub to see the plot for the first exercise. (sorry)
+
+
+# 4. QUESTION 1:
+# 	PLOT: Frequencies over time, multiple iterations
+# 		Each line/color shows the change in allele frequency over generations until the gene disappears from (reaches zero) or becomes fixed in the population (reaches one).
+# 	HISTOGRAM:
+# 		This histogram shows that lower allele frequency is associated with faster time to elimination or fixation. 
+
+# 4. QUESTION 2: 
+# 	ASSUMPTION 1:
+# 		The Wright-Fisher model assumes that there is no selection or random mating, which is not true in nature. 
+#		Natural selection may prefer one allele (that contributes to survival) and fixation would happen much faster. Most if not all frequencies would end up at one. 
+#		If nature selects against an allele (if the allele puts the an individual in danger), this allele is more likely to disappear. Most if not all frequencies would end up at zero. 
+# 	
