@@ -23,23 +23,25 @@ def wright_fisher(pop_size, starting_freq):
 		
 	return allele_freq, len(allele_freq)
 
-import matplotlib.pyplot as plt
+def make_plots(pop_size, starting_freq):
+	import matplotlib.pyplot as plt
 
-# xy plot with multiple iterations
-fig, ax = plt.subplots()
-for i in range(30):
-	function = wright_fisher(452, .3)
-	generation = range(function[1])
-	allele_freq_list = function[0]
-	ax.plot(generation, allele_freq_list)
-plt.show()
+	# xy plot with multiple iterations
+	fig, (ax1, ax2 )= plt.subplots(1, 2)
+	for i in range(30):
+		function = wright_fisher(pop_size, starting_freq)
+		generation = range(function[1])
+		allele_freq_list = function[0]
+		ax1.plot(generation, allele_freq_list)
 
-#Histogram
-final_generations = []
-for i in range(1000):
-	function = wright_fisher(452, .3)
-	final = (function[1])
-	final_generations.append(final)
-fig = plt.hist(final_generations)
+	#Histogram
+	final_generations = []
+	for i in range(1000):
+		function = wright_fisher(pop_size, starting_freq)
+		final = (function[1])
+		final_generations.append(final)
+	ax2.hist(final_generations)
 
-plt.show()
+	plt.show()
+
+make_plots(452, .3)
