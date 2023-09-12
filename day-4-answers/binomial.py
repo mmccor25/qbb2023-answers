@@ -28,15 +28,32 @@ print(wright_fisher(452, .3)[1])
 
 import matplotlib.pyplot as plt
 
+
+function = wright_fisher(452, .3)
+fig, ax = plt.subplots()
+generation = range(function[1])
+allele_freq_list = function[0]
+ax.plot(generation, allele_freq_list)
+ax.set_title("Allele frequency over time")
+ax.set_xlabel("Time (generations)")
+ax.set_ylabel("Allele frequency")
+fig.savefig( "Allele-freq-over-time")
+plt.show() 
+
+
 def make_plots(pop_size, starting_freq, xy_iterations, hist_iterations):
 	# xy plot with multiple iterations
-	fig, (ax1, ax2)= plt.subplots(1, 2)
+	fig, ax1= plt.subplots()
 	for i in range(xy_iterations):
 		function = wright_fisher(pop_size, starting_freq)
 		generation = range(function[1])
 		allele_freq_list = function[0]
 		ax1.plot(generation, allele_freq_list)
-
+	ax1.set_title("Allele frequency over time")
+	ax1.set_xlabel("Time (generations)")
+	ax1.set_ylabel("Allele frequency")
+	fig.savefig( "Allele-freq-over-time-multiple" )
+	plt.show()
 
 	#Histogram
 	final_generations = []
@@ -44,8 +61,12 @@ def make_plots(pop_size, starting_freq, xy_iterations, hist_iterations):
 		function = wright_fisher(pop_size, starting_freq)
 		final = (function[1])
 		final_generations.append(final)
+	fig, ax2 = plt.subplots() 
 	ax2.hist(final_generations)
-
+	ax2.set_title("Times to fixation")
+	ax2.set_xlabel("Time to fixation(generations)")
+	ax2.set_ylabel("Count")
+	fig.savefig( "times-to-fixation")
 	plt.show()
 
 make_plots(452, .3, 30, 1000)
@@ -69,6 +90,7 @@ ax_pop.scatter(population_sizes, avg_fix_times)
 ax_pop.set_title("Average fixation time over 50 iterations for each of 5 population sizes")
 ax_pop.set_xlabel("Population size")
 ax_pop.set_ylabel("Average time to fixation (generations)")
+fig.savefig( "pop-size-v-time-to-fixation.png" )
 
 
 #avg fixation times over 10 iterations for each of 5 allele frequencies
@@ -85,14 +107,11 @@ ax_freq.scatter(frequencies, avg_fix_times)
 ax_freq.set_title("Average fixation time over 10 iterations for each of 5 allele frequencies")
 ax_freq.set_xlabel("Frequency")
 ax_freq.set_ylabel("Average time to fixation (generations)")
+fig.savefig( "allele-freq-v-time-to-fixation.png" )
 
 
 plt.show()
-
-
-
-
-print(avg_fix_time)
+plt.close()
 
 
 # please run the first submission/commit on GitHub to see the plot for the first exercise. (sorry)
