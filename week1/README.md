@@ -17,3 +17,8 @@
 	dnm = (1.3538)(age) + 10.3263
 	dnm = (1.3538)(50.1) + 10.3263
 	dnm = 78.15168
+
+2.6
+	1. I chose a paired t-test because we are comparing two numbers, and the maternal and paternal dnms must both correspond to the same proband.
+
+	2. Yes, they are significantly different because the p-value is much smaller than .001
