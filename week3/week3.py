@@ -30,6 +30,13 @@ for j in range(len(sequence2)+1):
 	F_matrix[0,j] = j * gap_penalty
 
 for i in range(1, len(sequence1)+1):
+	traceback_matrix[i, 0] = "v"
+for j in range(1, len(sequence2)+1):
+	traceback_matrix[0, j] = "h"
+
+
+
+for i in range(1, len(sequence1)+1):
 	for j in range(1, len(sequence2)+1):
 		score = matrix.loc[sequence1[i-1], sequence2[j-1]]
 		d = F_matrix[i-1, j-1] + score
@@ -53,6 +60,29 @@ print(traceback_matrix)
 sequence1_alignment = []
 sequence2_alignment = []
 
-i,j = sequence1.shape[0], sequence2.shape[1]
+i, j = len(sequence1), len(sequence2)
 while i >= 0 and j >= 0:
+	if traceback_matrix[i,j] == "d":
+		sequence1_alignment.insert(0, sequence1[i-1])
+		sequence2_alignment.insert(0, sequence2[j-1])
+		i -= 1
+		j -= 1
+	elif traceback_matrix[i,j] == "h":
+		sequence1_alignment.insert(0,"-")
+		sequence2_alignment.insert(0, sequence2[j-1])
+		j -= 1
+	elif traceback_matrix[i,j] == "v":
+		sequence1_alignment.insert(0, sequence1[i-1])
+		sequence2_alignment.insert(0,"-")
+		i -= 1
+	else:
+		i -= 1
+		j -= 1
+
+sequence1_string = ''.join(sequence1_alignment)
+sequence2_string = ''.join(sequence2_alignment)
+
+print(sequence1_string)
+print(sequence2_string)
+
 	
