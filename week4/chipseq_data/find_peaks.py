@@ -23,21 +23,21 @@ def main():
 
 
     # Load the sample bedgraph data, reusing the function we already wrote
-    forward = load_bedgraph(forward_fname, chrom, 0, chromlen)
-    reverse = load_bedgraph(reverse_fname, chrom, 0, chromlen)
+    forward = load_bedgraph(forward_fname, chrom, chromstart, chromend)
+    reverse = load_bedgraph(reverse_fname, chrom, chromstart, chromend)
 
     # Combine tag densities, shifting
-    forward = forward[99:]
-    reverse = reverse[:-99]
-    combined = forward + reverse
+    combined = numpy.zeros(chromlen, int) # array saved in sample
+    combined[:-frag_width//2] = reverse[frag_width//2:] 
+    combined[frag_width//2:] += forward[:-frag_width//2]
 
     # Load the control bedgraph data, reusing the function we already wrote
     fwd_control = load_bedgraph("control.fwd.bg", chrom, 0, chromlen)
     rev_control = load_bedgraph("control.rev.bg", chrom, 0, chromlen)
 
     # Combine tag densities
-    fwd_control = fwd_control[99:]
-    rev_control = rev_control[:-99]
+    # fwd_control = fwd_control[99:]
+    # rev_control = rev_control[:-99]
     combined_control = fwd_control + rev_control
 
     # Adjust the control to have the same coverage as our sample
@@ -55,7 +55,7 @@ def main():
 
     # Score the sample using a binsize that is twice our fragment size
     # We can reuse the binning function we already wrote
-    scores = bin_array(combined_control, 2*frag_width)
+    scores = bin_array(combined, 2*frag_width)
 
     # Find the p-value for each position (you can pass a whole array of values
     # and and array of means). Use scipy.stats.poisson for the distribution.
