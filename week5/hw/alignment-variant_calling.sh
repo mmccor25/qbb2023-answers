@@ -17,35 +17,28 @@ cd /Users/cmdb/qbb2023-answers/week5/hw
 # 	samtools sort -o ${sam%.*}.bam -O bam ${sam}
 # done
 
-for bam in *.bam
-do
-	samtools index ${bam}
-done
+# for bam in *.bam
+# do
+# 	samtools index ${bam}
+# done
 
 
 # EXERCISE 2
-ls *.bam > bam_inputs.txt
-freebayes -L bam_inputs.txt -f sacCer3.fa -p 1 --genotype-qualities > variant_calls.vcf
+# 2.1
+# ls *.bam > bam_inputs.txt
+# freebayes -L bam_inputs.txt -f sacCer3.fa -p 1 --genotype-qualities > variant_calls.vcf
 
 
-# # 2.2
-# for file in *.vcf
-# do 
-# 	vcffilter -f "QUAL >= 20" $file > ${file%.*}_quality.vcf
-# done
+# 2.2
+# vcffilter -f "QUAL > 20" variant_calls.vcf > quality_variant_calls.vcf
 
 # 2.3
-# for file in *_quality
-# do
-# 	vcfallelicprimitives -k -g ${file} > ${file}_biallelic.vcf
-# done
+# vcfallelicprimitives -k -g quality_variant_calls.vcf > biallelic.vcf
 
 # 2.4
-# for biallelic in *_biallelic.vcf
-# do
-# 	snpEff ann $biallelic > ${biallelic%.*}.vcf_final
+snpEff -download R64-1-1.105 biallelic.vcf > final.vcf
 
-# head final
+head -n 100 final.vcf > head_final.vcf
 
 
 
