@@ -1,0 +1,1 @@
+$ plink --vcf genotypes.vcf --pca --out pca
