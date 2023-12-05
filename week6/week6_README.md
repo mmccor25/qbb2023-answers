@@ -12,3 +12,5 @@ $ plink --vcf genotypes.vcf --linear --pheno GS451_IC50.txt --covar pca.eigenvec
 
 
 3.4
+Gene for CB1908 phenotype: DIP2B
+This SNP might cause a loss-of-function mutation that leads to the phenotype

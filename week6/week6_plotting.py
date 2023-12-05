@@ -81,7 +81,6 @@ for x,y in zip(x_cb, y_cb):
 
 
 
-
 # make manhattan plot
 fig, ax = plt.subplots(2,1)
 
@@ -89,16 +88,34 @@ ax[0].set_title("GS451")
 ax[0].scatter(x_gs, y_gs)
 ax[0].scatter(gs_insignificant_x, gs_insignificant_y, color ="blue")
 ax[0].scatter(gs_significant_x, gs_significant_y, color="red")
+ax[0].set_ylabel("Significance")
+ax[0].set_xlabel("Position")
+
 
 ax[1].set_title("CB1908")
 ax[1].scatter(x_cb, y_cb)
 ax[1].scatter(cb_insignificant_x, cb_insignificant_y, color ="blue")
 ax[1].scatter(cb_significant_x, cb_significant_y, color="red")
+ax[1].set_ylabel("Significance")
+ax[1].set_xlabel("Position")
 
+fig.tight_layout()
 fig.savefig("manhattan.png")
 
 
+# 3.3
+
+for i in range(len(cb_significant_y)):
+	if cb_significant_y[i] == max(cb_significant_y):
+		cb_position = cb_significant_x[i]
 
 
+for i in range(len(gs_significant_y)):
+	if gs_significant_y[i] == max(gs_significant_y):
+		gs_position = gs_significant_x[i]
+
+print(cb1908.iloc[cb_position,:])
+
+print(cb1908.iloc[gs_position,:])
 
 
