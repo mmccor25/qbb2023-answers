@@ -67,12 +67,68 @@ def main():
 	hist2d, x, y = np.histogram2d(nanopore_methscores, bismark_methscores)
 	ax[1].imshow(np.log10(1+hist2d))
 	ax[1].set_title(f"Methylation scores compared. Correlation: {str(np.corrcoef(nanopore_methscores, bismark_methscores)[0,1])[:4]}" )
-	plt.show()
 
+
+	# 3d: comparing tumor vs normal
+	cancer_nanopore = load_data("tumor.ONT.chr2.bedgraph")
+	cancer_nanopore = make_pandas(cancer_nanopore)
+	cancer_nanopore.set_index("site")
+
+	cancer_bismark = load_data("tumor.bisulfite.chr2.bedgraph")
+	cancer_bismark = make_pandas(cancer_bismark)
+	cancer_bismark.set_index("site")
+
+	normal_nanopore = load_data("normal.ONT.chr2.bedgraph")
+	normal_nanopore = make_pandas(normal_nanopore)
+	normal_nanopore.set_index("site")
+
+	normal_bismark = load_data("normal.bisulfite.chr2.bedgraph")
+	normal_bismark = make_pandas(normal_bismark)
+	normal_nanopore.set_index("site")
+
+	bismark_compared = cancer_bismark - normal_bismark 
+	notnull = bismark_compared["methscore"].notnull()
+	bismark_compared = bismark_compared.loc[notnull, :]
+	list_bismark_compared = []
+	for i in bismark_compared["methscore"]:
+		if i !=0:
+			list_bismark_compared.append(i)
+
+	nanopore_compared = cancer_nanopore - normal_nanopore 
+	notnull = nanopore_compared["methscore"].notnull()
+	nanopore_compared = nanopore_compared.loc[notnull, :]
+	
+	sites_merged = []
+	list_nanopore_compared = []
+
+	for i in nanopore_compared["methscore"]:
+		if i !=0:
+			list_nanopore_compared.append(i)
+		#sites_merged.append(nanopore_compared[i])
+
+	for i in normal_nanopore.index:
+		 if i in cancer_nanopore.index:
+		 	sites_merged.append(i)
+
+	
+	r_coeff = np.corrcoef(normal_nanopore.loc[sites_merged, 'methscore'] - cancer_nanopore.loc[sites_merged, 'methscore'], normal_bismark.loc[sites_merged, 'methscore'] - cancer_bismark.loc[sites_merged, 'methscore'])[0, 1]
+	
+
+	ax[2].violinplot([list_nanopore_compared, list_bismark_compared])
+	ax[2].set_title("Tumor vs. Cancer methylation scores")
+	ax[2].set_xticks([1,2], labels=["Nanopore", "Bismark"])
+
+	#both = list_nanopore_compared.intersection(list_bismark_compared)
+	#print(both)
+
+	#r_coeff = np.corrcoef(list_nanopore_compared, list_bismark_compared)
+	print(r_coeff)
+	ax[2].set_title(f"Methylation scores compared. Correlation: {str(r_coeff)[:4]}" )
+
+
+	# plt.show()
+	fig.tight_layout()
 	plt.savefig(out_fname+".png")
-
-	print()
-
 
 def load_data(fname):
 	data = []
