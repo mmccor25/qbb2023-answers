@@ -1,0 +1,70 @@
+#!/usr/bin/env python
+
+# 1.1
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from statsmodels.stats import multitest
+from pydeseq2 import preprocessing
+from pydeseq2.dds import DeseqDataSet
+from pydeseq2.ds import DeseqStats
+
+# # read in data
+# counts_df = pd.read_csv("gtex_whole_blood_counts_formatted.txt", index_col = 0)
+
+# # read in metadata
+# metadata = pd.read_csv("gtex_metadata.txt", index_col = 0)
+
+
+# # 1.2
+# counts_df_normed = preprocessing.deseq2_norm(counts_df)[0]
+# counts_df_normed = np.log2(counts_df_normed + 1)
+
+
+# # 1.3
+# full_design_df = pd.concat([counts_df_normed, metadata], axis=1)
+
+
+# # 1.4
+# model = smf.ols(formula = 'Q("DDX11L1") ~ SEX', data=full_design_df)
+# results = model.fit()
+
+# slope = results.params[1]
+# pval = results.pvalues[1]
+
+# # 1.5
+# # MAKE NEW DATAFRAME WITH MY HOMEMADE ANAYLSIS
+# gene_names = full_design_df.columns[:-3]
+# slopes = []
+# pvalues = []
+
+# for i in range(len(gene_names)):
+# 	gene = gene_names[i]
+# 	model = smf.ols(formula = 'Q(gene_names[i]) ~ SEX', data=full_design_df)
+# 	results = model.fit()
+
+# 	slope = results.params[1]
+# 	slopes.append(slope)
+
+# 	pval = results.pvalues[1]
+# 	pvalues.append(pval)
+
+# homemade_analysis = pd.DataFrame({'GeneName': gene_names, 'Slope': slopes, 'P-value': pvalues})
+# homemade_analysis['P-value'] = homemade_analysis['P-value'].fillna(1.0)
+
+# fdr = multitest.fdrcorrection(homemade_analysis['P-value'], alpha=0.05, method='indep', is_sorted=False)
+
+# homemade_analysis = pd.DataFrame({'GeneName': gene_names, 'Slope': slopes, 'P-value': pvalues, 'FDR': fdr[1]})
+# homemade_analysis.to_csv('homemade_analysis.txt')
+
+# find top 10%
+homemade_analysis = pd.read_csv("homemade_analysis.txt", index_col = 0)
+
+sig_homemade_results = homemade_analysis.loc[homemade_analysis["FDR"] <.1, :]
+
+sig_genes = sig_homemade_results["GeneName"].tolist()
+
+with open("homemade_significangt_genes.txt", "w") as file:
+	for gene in sig_genes:
+		file.write(str(gene)+"\n")
