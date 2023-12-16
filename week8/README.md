@@ -1,5 +1,5 @@
 Command to run convert_washU_to_UCSC.py:
-$ python convert_washU_to_UCSC.py .baitmap
+$ python convert_washU_to_UCSC.py raw/Design/h19_chr20and21.baitmap output/data/output_washU_text.txt ucsc_output.bed
 
 
 
@@ -15,9 +15,9 @@ $ Rscript runChicago.R raw/PCHIC_Data/GM_rep1.chinput,raw/PCHIC_Data/GM_rep2.chi
 
 
 Q1: 
-CTCF: CTCF is present at TAD boundaries, and CTCF-binding regions are expected to interact with each other, rather than promoters. Interestingly, we see moderate overlap with interactions.
+CTCF: CTCF is present at TAD boundaries, and CTCF-binding regions are expected to interact with each other. Accordingly, we see moderate overlap with interactions.
 
-H3K27ac: This acetylated DNA is typically open, so we expect more interactions with promoters. Surprisingly, the overlap with significant interactions is high. 
+H3K27ac: This acetylated DNA is typically open, so we expect more (enhancer) interactions with promoters. Surprisingly, the overlap with significant interactions is high. 
 
 H3K27me3: This modification is associated with heterochromatin, so we expect fewer interactions with promoters. Accordingly, this feature has the fewest overlaps with significant interactions.
 
